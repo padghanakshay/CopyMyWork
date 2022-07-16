@@ -225,7 +225,7 @@ void Util::CreateFolder(const std::string&  path)
 		int totalCount = std::count(path.begin(), path.end(), '\\');
 		std::string myCopy = path;
 		std::string temp = "";
-		while (totalCount < 0)
+		while (totalCount >= 0)
 		{
 			--totalCount;
 
