@@ -220,7 +220,27 @@ void Util::CreateFolder(const std::string&  path)
 {
 	std::wstring wsTmp = L"";
 	Util::StringToWstring(path, wsTmp);
-	_tmkdir(wsTmp.c_str());
+	if (0 != _tmkdir(wsTmp.c_str()))
+	{
+		int totalCount = std::count(path.begin(), path.end(), '\\');
+		std::string myCopy = path;
+		std::string temp = "";
+		while (totalCount < 0)
+		{
+			--totalCount;
+
+			int ind = myCopy.find_first_of('\\');
+			if (ind == std::string::npos)
+				ind = myCopy.length() - 1;
+			std::string my1 = myCopy.substr(0, myCopy.find_first_of('\\') + 1);
+			auto folderPath = temp + my1;
+			std::wstring wsTmp11 = L"";
+			Util::StringToWstring(folderPath, wsTmp11);
+			_tmkdir(wsTmp11.c_str());
+			temp = folderPath;
+			myCopy = myCopy.substr(myCopy.find_first_of('\\') + 1);
+		}
+	}
 }
 //================================================================================
 void Util::StringToWstring(const std::string&  path, std::wstring& ws)
